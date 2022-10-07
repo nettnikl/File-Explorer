@@ -33,6 +33,7 @@ import com.raival.fileexplorer.common.view.BottomBarView
 import com.raival.fileexplorer.common.view.TabView
 import com.raival.fileexplorer.common.view.TabView.OnUpdateTabViewListener
 import com.raival.fileexplorer.extension.*
+import com.raival.fileexplorer.root.RootUtils
 import com.raival.fileexplorer.tab.BaseDataHolder
 import com.raival.fileexplorer.tab.BaseTabFragment
 import com.raival.fileexplorer.tab.apps.AppsTabDataHolder
@@ -434,6 +435,9 @@ class MainActivity : BaseActivity() {
                             )
                         }
                     } else {
+                        if (RootUtils.exists(file)) {
+                            showMsg("Root currently not supported")
+                        }
                         showMsg(Log.UNABLE_TO + " read the provided file")
                     }
                 } else {

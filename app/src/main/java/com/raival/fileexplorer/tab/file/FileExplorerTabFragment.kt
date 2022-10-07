@@ -22,6 +22,7 @@ import com.raival.fileexplorer.common.dialog.CustomDialog
 import com.raival.fileexplorer.extension.getFormattedFileCount
 import com.raival.fileexplorer.extension.getShortLabel
 import com.raival.fileexplorer.extension.toDp
+import com.raival.fileexplorer.root.RootUtils
 import com.raival.fileexplorer.tab.BaseDataHolder
 import com.raival.fileexplorer.tab.BaseTabFragment
 import com.raival.fileexplorer.tab.file.adapter.FileListAdapter
@@ -496,8 +497,15 @@ class FileExplorerTabFragment : BaseTabFragment {
         }
         // Clear previous list
         files.clear()
-        // Load all files in the current File
-        val files = currentDirectory!!.listFiles()
+
+        // Load all files in the current directory
+        var files = currentDirectory!!.listFiles()
+
+        if (files == null) {
+            // Fallback uses root access to list files
+            files = runCatching { RootUtils.listFiles(currentDirectory!!).toTypedArray() }.getOrNull()
+        }
+
         if (files != null) {
             for (comparator in FileUtils.comparators) {
                 Arrays.sort(files, comparator)
